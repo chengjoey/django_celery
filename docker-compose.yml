@@ -1,0 +1,40 @@
+version: '2'
+
+services:
+  web:
+    build: .
+    command: "python3 manage.py runserver 0.0.0.0:8000"
+    ports:
+      - "8000:8000"
+    links: 
+      - mongodb
+      - celerywork
+      - celerybeat
+    depends_on:
+      - mongodb
+    volumes:
+      - ./mysite:/opt/django_celery/mysite
+      - /etc/localtime:/etc/localtime:ro
+  celerywork:
+    build: .
+    command: "celery worker -A mysite -l info"
+    links: 
+      - mongodb
+      - celerybeat
+    volumes:
+      - ./mysite:/opt/django_celery/mysite
+      - /etc/localtime:/etc/localtime:ro
+  celerybeat:
+    build: .
+    command: "celery beat -A mysite -l info"
+    links:
+      - mongodb
+    volumes:
+      - ./mysite:/opt/django_celery/mysite
+      - /etc/localtime:/etc/localtime:ro
+  mongodb:
+    hostname: mongodb
+    image: "mongo:4.0.3"
+    volumes:
+      - ./data/mongo:/data/db
+      - /etc/localtime:/etc/localtime:ro

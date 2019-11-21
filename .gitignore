@@ -1,0 +1,6 @@
+py3env
+.vscode
+*.py[cod]
+*.log
+celerybeat-schedule
+celerybeat.pid
