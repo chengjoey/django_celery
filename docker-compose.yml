@@ -3,9 +3,9 @@ version: '2'
 services:
   web:
     build: .
-    command: "python3 manage.py runserver 0.0.0.0:8000"
+    command: "python3 manage.py runserver 0.0.0.0:3389"
     ports:
-      - "8000:8000"
+      - "3389:3389"
     links: 
       - mongodb
       - celerywork
